@@ -2,7 +2,9 @@ version: 0.2
 phases:
   build:
     commands:
-      - echo "Build started, packaging files..."
+      - echo "Packaging CodeDeploy application files..."
 artifacts:
   files:
     - index.html
+    - appspec.yml
+    - 'scripts/**/*'

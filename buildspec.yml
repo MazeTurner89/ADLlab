@@ -1,12 +1,8 @@
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "Statement1",
-            "Effect": "Allow",
-            "Principal": "*",
-            "Action": "S3:GetObject",
-            "Resource": "arn:aws:s3:::demo.martin/*"
-        }
-    ]
-}
+version: 0.2
+phases:
+  build:
+    commands:
+      - echo "Build started, packaging files..."
+artifacts:
+  files:
+    - index.html

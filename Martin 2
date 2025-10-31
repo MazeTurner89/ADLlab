@@ -1,0 +1,62 @@
+TERRAFORM
+
+Create IAM user with default settings
+create users group
+add the created user in user group and add "AdministratorAccess" in attach policies
+click on user and go to security credentials
+create access key 
+select CLI
+copy the Access Key and Secret Key on notepad 
+then go EC2 instance 
+click on launch instance
+and look for AMI ID 
+copy the AMI ID in notepad
+and check the server "us-east-1"
+open vs code and make a main.tf file
+paste this code
+
+provider "aws" {
+  access_key = ""
+  secret_key = ""
+  region = "us-east-1"
+}
+
+resource "aws_instance" "xie_instance" {
+  ami = "AMI"
+  instance_type = "t3.micro"
+  tags = {
+    Name = "xie_instance"
+  }
+}
+
+enter the details pasted on notepad (Access key, secret key, AMI ID)
+then run commands in vscode terminal 
+>terraform init
+>terraform plan
+>terraform apply
+if error occurs change the instance type in code from "t3.micro" to "t2.micro".
+>terraform destroy
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Kubernets
+
+go to EC2
+launch instance (ubuntu 22.04, t3.small)
+make key pair
+select RSA and .pem
+in network settings click on edit
+click on "add security group rule"
+in port range "8080"
+click on source and select "0.0.0.0/0"
+launch instance
+go to instances and select and click on connect
+now paste the following commands
+
+>sudo apt-get update && sudo apt-get upgradeÂ -y
+>sudo apt-get install docker.io -y
+>sudo usermod -aG docker $USER
+>newgrp docker
+>curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+>sudo install minikube-linux-amd64 /usr/local/bin/minikube
+>minikube start
+>minikube status

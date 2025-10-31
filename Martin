@@ -1,0 +1,440 @@
+10 experiment: Create EC2 Instance and IAM Role/User with Specific Permissions (Using AWS Website Only)
+ Aim
+
+To create an Ubuntu EC2 instance (Free Tier) using .ppk key pair, connect to it via the AWS Management Console (EC2 Instance Connect), display the present working directory, and create an IAM Role, User, and Group with specific permissions.
+
+ Part A: Create EC2 Instance
+
+Step 1: Open EC2 Dashboard
+
+Log in to your AWS Management Console â†’ https://aws.amazon.com/console
+
+In the search bar, type EC2 and open the EC2 Dashboard.
+
+Click Instances â†’ Launch Instances.
+
+Step 2: Configure Instance
+
+Name: UbuntuInstance
+
+Application and OS Image (AMI): Ubuntu Server 22.04 LTS (Free Tier eligible)
+
+Instance Type: t2.micro
+
+Key Pair (login):
+
+Click Create new key pair
+
+Key pair name: ubuntu-key
+
+Key pair type: RSA
+
+Private key file format: .ppk (for compatibility, though we wonâ€™t use PuTTY)
+
+Click Create key pair (it will download automatically).
+
+Network settings:
+
+Check Allow SSH traffic from Anywhere (0.0.0.0/0)
+
+Storage:
+
+Keep default (8 GB gp3).
+
+Click Launch Instance.
+
+Step 3: Verify Instance Creation
+
+Go to EC2 â†’ Instances â†’ Running Instances.
+
+Wait until Instance State = Running and Status Check = 2/2 checks passed.
+
+Copy the Public IPv4 address (used for connection).
+
+Part B: Connect to EC2 Instance (No PuTTY Used)
+
+Step 1: Use EC2 Instance Connect
+
+In the EC2 Instances page, select your instance (UbuntuInstance).
+
+Click the Connect button at the top.
+
+Select the EC2 Instance Connect tab (default option).
+
+Click Connect again.
+
+A browser-based terminal window opens â€” you are now connected to your Ubuntu EC2 instance directly on the AWS website.
+
+Step 2: Display Present Working Directory
+In the EC2 terminal window, type:
+
+pwd
+
+
+Output:
+
+/home/ubuntu
+
+
+This confirms your connection to the EC2 instance.
+
+Part C: Create IAM Role with Required Policies
+
+Step 1: Open IAM Dashboard
+
+In AWS Console search bar â†’ type IAM â†’ select IAM service.
+
+Step 2: Create a Role
+
+In the left sidebar, click Roles â†’ Create role.
+
+Trusted entity type: AWS Service.
+
+Use case: select EC2 (weâ€™ll attach this role to the instance).
+
+Click Next.
+
+Step 3: Attach Permission Policies
+In the search bar, add the following two policies:
+
+AmazonS3FullAccess
+
+AWSLambdaBasicExecutionRole
+Click Next.
+
+Step 4: Name and Create Role
+
+Role name: EC2-S3-Lambda-Role
+
+Review configuration â†’ Click Create role.
+
+Step 5: Attach Role to the EC2 Instance
+
+Go to EC2 â†’ Instances â†’ select your running instance.
+
+Click Actions â†’ Security â†’ Modify IAM Role.
+
+Under IAM Role, select EC2-S3-Lambda-Role.
+
+Click Update IAM role.
+
+The IAM Role with S3 and Lambda permissions is now attached to your EC2 instance.
+
+Part D: Create IAM Group and User
+
+Step 1: Create Group
+
+In IAM dashboard â†’ Click User groups â†’ Create group.
+
+Enter Group name: adlGroup.
+
+(Optional) You can attach general policies if needed.
+
+Click Create group.
+
+Step 2: Create User
+
+Go to Users â†’ Create user.
+
+User name: adlUser.
+
+Click Next.
+
+Under Set permissions, choose Add user to group.
+
+Select the group you just created â†’ adlGroup.
+
+Click Next â†’ Create user.
+
+IAM user adlUser is now created and added to group adlGroup.
+----------------------------------------------------------------------------------------------------------------------------------------------
+Experiment 11 a: Create EC2 Instance and Switch to Superuser (No PuTTY)
+Aim:
+
+To create an Ubuntu EC2 instance on AWS (Free Tier), connect to it using EC2 Instance Connect, and switch to the superuser.
+
+Steps
+
+Step 1: Login to AWS Console â†’ Search EC2 â†’ Open EC2 Dashboard.
+Step 2: Click Instances â†’ Launch instances.
+
+Step 3: Configure details
+
+Name: UbuntuInstance1
+
+AMI (OS): Ubuntu Server 22.04 LTS (Free Tier eligible)
+
+Instance type: t2.micro
+
+Key pair (login):
+
+Create new key pair
+
+Key name: superuser-key
+
+Key type: RSA
+
+File format: .ppk (for PuTTY compatibility; not used here)
+
+Click Create key pair to download it
+
+Network settings: Allow SSH (Port 22)
+
+Storage: Default (8 GB gp3)
+
+Click Launch instance.
+
+Step 4: Verify Instance
+Go to EC2 â†’ Instances and confirm:
+
+Instance state â†’ Running
+
+Status check â†’ 2/2 checks passed
+
+Step 5: Connect to Instance
+
+Select the instance â†’ Click Connect â†’ Choose EC2 Instance Connect â†’ Click Connect
+This opens a terminal in your browser connected to the instance.
+
+Step 6: Display Present Working Directory
+Run:
+
+pwd
+
+
+Output:
+
+/home/ubuntu
+
+
+Step 7: Switch to Superuser
+Run:
+
+sudo su
+
+
+Output:
+
+root@ip-xx-xx-xx-xx:/home/ubuntu#
+
+
+You are now in superuser (root) mode.
+
+Result:
+
+Successfully created an Ubuntu EC2 instance and connected using AWS EC2 Instance Connect, verified working directory, and switched to superuser using sudo su.
+
+Experiment 11 b: Create EC2 Instance and Install Docker (No PuTTY)
+Aim:
+
+To create an Ubuntu EC2 instance on AWS (Free Tier), connect using EC2 Instance Connect, install Docker, enable it, and check its status.
+
+Steps
+
+Step 1: Login to AWS Console â†’ Open EC2 Dashboard â†’ Click Launch Instances.
+
+Step 2: Configure instance details
+
+Name: UbuntuDockerInstance
+
+AMI (OS): Ubuntu Server 22.04 LTS (Free Tier eligible)
+
+Instance type: t2.micro
+
+Key pair (login):
+
+Create new key pair
+
+Key name: docker-key
+
+Key type: RSA
+
+File format: .ppk
+
+Click Create key pair (download it)
+
+Network settings: Allow SSH (Port 22)
+
+Storage: Default (8 GB gp3)
+
+Click Launch instance.
+
+Step 3: Verify Instance
+Go to EC2 â†’ Instances â†’ Running Instances, confirm Running state.
+
+Step 4: Connect via EC2 Instance Connect
+
+Select your instance â†’ Connect â†’ EC2 Instance Connect â†’ Connect
+Terminal opens in browser.
+
+Step 5: Switch to Superuser
+Run:
+
+sudo su
+
+
+You now have root privileges.
+
+Step 6: Update Package Repositories
+
+apt update -y
+
+
+Step 7: Install Docker
+
+apt install docker.io -y
+
+
+Step 8: Enable Docker Service (Auto Start at Boot)
+
+systemctl enable docker
+
+
+Step 9: Start Docker Service
+
+systemctl start docker
+
+
+Step 10: Check Docker Status
+
+systemctl status docker
+
+
+Output should show â€œactive (running)â€.
+
+Press Q to exit status screen.
+
+Result:
+
+Successfully created an Ubuntu EC2 instance using AWS website, connected via EC2 Instance Connect, installed Docker, enabled it at boot, and verified its active status.
+------------------------------------------------------------------------------------------------------------------------------------------------
+Experiment 12
+Aim:
+
+Create an empty S3 bucket in the N. Virginia region.
+
+Add and delete an object from the bucket.
+
+Delete the bucket.
+
+Create an EC2 instance with Ubuntu (Free Tier).
+
+Install Docker and check its version â€” all using the AWS Management Console (website) only.
+
+Part A â€“ Amazon S3
+Step 1: Create an Empty Bucket
+
+Sign in to AWS Management Console.
+
+In the search bar, type S3 and open S3 Dashboard.
+
+Click Create bucket.
+
+Enter a unique bucket name, e.g., my-test-bucket-aws-lab12.
+
+Choose Region: US East (N. Virginia) â€“ us-east-1.
+
+Keep all settings default (Block public access â€“ ON).
+
+Click Create bucket.
+
+Result: An empty bucket is successfully created in N. Virginia.
+
+Step 2: Add an Object in the Bucket
+
+Open the newly created bucket.
+
+Click Upload â†’ Add files.
+
+Choose any small local file (e.g., test.txt).
+
+Click Upload.
+
+Result: Object (test.txt) successfully uploaded to the bucket.
+
+Step 3: Delete the Object
+
+Select the uploaded object (test.txt).
+
+Click Delete.
+
+Confirm deletion by typing delete.
+
+ Result: Object deleted from the bucket.
+
+Step 4: Delete the Bucket
+
+Go back to S3 â†’ Buckets list.
+
+Select your bucket.
+
+Click Delete.
+
+Type the bucket name to confirm deletion.
+
+ Result: Bucket successfully deleted.
+
+Part B â€“ Amazon EC2
+Step 5: Launch an EC2 Instance
+
+In AWS Console, search for EC2 â†’ Open EC2 Dashboard â†’ Click Launch instances.
+
+Enter Name: UbuntuDockerInstance.
+
+Choose AMI (OS): Ubuntu Server 22.04 LTS (Free Tier eligible).
+
+Choose Instance type: t2.micro.
+
+Key pair (login):
+
+Click Create new key pair.
+
+Name: docker-key.
+
+Type: RSA, Format: .ppk.
+
+Click Create key pair to download it.
+
+Network settings: Allow SSH (Port 22).
+
+Storage: Default (8 GB gp3).
+
+Click Launch instance.
+
+Result: EC2 instance created successfully.
+
+Step 6: Connect to the Instance
+
+Go to EC2 â†’ Instances â†’ Running Instances.
+
+Select your instance â†’ Click Connect â†’ EC2 Instance Connect â†’ Connect.
+A browser terminal opens connected to your instance.
+
+Step 7: Switch to Superuser
+sudo su
+
+
+You now have root access.
+
+Step 8: Update Package Repositories
+apt update -y
+
+Step 9: Install Docker
+apt install docker.io -y
+
+Step 10: Check Docker Version
+docker --version
+
+
+Output Example:
+
+Docker version 24.0.7, build afdd53b
+
+Step 11: Enable and Start Docker Service
+systemctl enable docker
+systemctl start docker
+systemctl status docker
+
+
+Output shows:
+active (running) â†’ Docker service is up and running.
